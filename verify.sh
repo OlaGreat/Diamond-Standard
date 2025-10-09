@@ -7,6 +7,7 @@ contracts=(
   "0x96a830b053b73f1e00906dd2566f8b4b2b72ad54 src/contracts/facets/ERC20Facet.sol:ERC20Facet"
   "0x3ce9c05d711e4ddeb0f45454e19d3a7d9a81c6af src/contracts/facets/Erc20Manager.sol:Erc20Manager"
   "0xfc609cc81cba94019eb3ad55ee14ebef0ab41f97 src/contracts/facets/MultiSigFacet.sol:MultiSigWallet"
+  "DIAMOND=0xbf473e12B6a70265a21fF7a7303ACF91eA1c8413"
 )
 
  

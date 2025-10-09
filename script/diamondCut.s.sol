@@ -26,15 +26,19 @@ contract DiamondDeployScript is Script {
         erc20Facet =  ERC20Facet(0x96A830B053b73f1e00906dd2566f8B4b2b72Ad54);
         erc20Manager =  Erc20Manager(0x3ce9C05d711E4dDEb0f45454e19d3a7d9a81c6af);
         multiSigWallet =  MultiSigWallet(payable(0xfc609cC81cba94019Eb3AD55eE14EBeF0ab41F97));
-
+        
+        // uint owner = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast();
-          IDiamondCut.FacetCut[] memory diamondCut = new IDiamondCut.FacetCut[](4); 
-        bytes4[] memory diamondLoupeselectors = new bytes4 [](5);
+        console.log("Deploying contracts with the account: ========= ", msg.sender);
+    
+
+        IDiamondCut.FacetCut[] memory diamondCut = new IDiamondCut.FacetCut[](4); 
+        bytes4[] memory diamondLoupeselectors = new bytes4 [](4);
         diamondLoupeselectors[0] = diamondLoupeFacet.facets.selector;      
         diamondLoupeselectors[1] = diamondLoupeFacet.facetAddress.selector;
         diamondLoupeselectors[2] = diamondLoupeFacet.facetFunctionSelectors.selector;
         diamondLoupeselectors[3] = diamondLoupeFacet.supportsInterface.selector;
-        diamondLoupeselectors[4] = diamondLoupeFacet.facetAddress.selector;
+        // diamondLoupeselectors[4] = diamondLoupeFacet.facetAddress.selector;
 
         diamondCut[0] = IDiamondCut.FacetCut({
             facetAddress: address(0xe5efB8aaa8a021d48F64efAE2Cf73e1fe1F66954),// DiamondLoupeFacet
@@ -87,6 +91,25 @@ contract DiamondDeployScript is Script {
             action: IDiamondCut.FacetCutAction.Add,
             functionSelectors: multiSigWalletSelectors
         });
+
+        bytes memory data = abi.encodeWithSelector(
+            IDiamondCut.diamondCut.selector, 
+            diamondCut,
+            address(0),
+            ""
+            );
+
+            (bool success, bytes memory result) = address(0xbf473e12B6a70265a21fF7a7303ACF91eA1c8413).call(data);
+
+            // console.log("Upgrade tx result: =============", result);
+
+            require(success, "Diamond upgrade failed");
+
+
+
+
+
+        // diamondCutFacet.diamondCut(diamondCut, address(0), "");
 
 
         vm.stopBroadcast();
